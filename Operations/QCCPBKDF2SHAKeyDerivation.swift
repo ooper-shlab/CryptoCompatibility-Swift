@@ -191,7 +191,7 @@ class QCCPBKDF2SHAKeyDerivation: Operation {
         
         // CCCalibratePBKDF returns undocumented error codes <rdar://problem/13641039>.
         
-        if result < 0 {
+        if Int32(bitPattern: result) < 0 {
             // Setting actualRounds to 0 triggers an error path in our caller.
             result = 0
         }

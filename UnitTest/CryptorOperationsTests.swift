@@ -237,15 +237,15 @@ class CryptorOperationsTests: XCTestCase {
         var op = QCCAESCryptor(toEncryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         op = QCCAESCryptor(toDecryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         // key not one of the standard AES key lengths
@@ -257,15 +257,15 @@ class CryptorOperationsTests: XCTestCase {
         op = QCCAESCryptor(toEncryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         op = QCCAESCryptor(toDecryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         // IV specified, but not a multiple of the block size
@@ -280,16 +280,16 @@ class CryptorOperationsTests: XCTestCase {
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         op = QCCAESCryptor(toDecryptInput: inputData, key: keyData)
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
     }
     
@@ -427,8 +427,8 @@ class CryptorOperationsTests: XCTestCase {
         var op = QCCAESPadCryptor(toDecryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         // key not one of the standard AES key lengths
@@ -440,15 +440,15 @@ class CryptorOperationsTests: XCTestCase {
         op = QCCAESPadCryptor(toEncryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         op = QCCAESPadCryptor(toDecryptInput: inputData, key: keyData)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         // IV specified, but not a multiple of the block size
@@ -463,16 +463,16 @@ class CryptorOperationsTests: XCTestCase {
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
         
         op = QCCAESPadCryptor(toDecryptInput: inputData, key: keyData)
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.outputData)
     }
     
@@ -608,8 +608,8 @@ class CryptorOperationsTests: XCTestCase {
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadBigCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadBigCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssert((outputStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data).isEmpty)
         
         // IV specified, but not a multiple of the block size
@@ -628,8 +628,8 @@ class CryptorOperationsTests: XCTestCase {
         op.ivData = ivData
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCAESPadBigCryptor.ErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCAESPadBigCryptor.ErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssert((outputStream.property(forKey: .dataWrittenToMemoryStreamKey) as! Data).isEmpty)
     }
     

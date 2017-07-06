@@ -173,8 +173,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertNotNil((op.error as? NSError)?.domain)
-        XCTAssert((op.error as? NSError)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertNotNil((op.error as NSError?)?.domain)
+        XCTAssert((op.error as NSError?)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.signatureData)
     }
     
@@ -188,8 +188,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertTrue((op.error as? NSError)?.code != 0) // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertTrue((op.error as NSError?)?.code != 0) // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.smallOutputData)
         
         // decrypt with the public key
@@ -200,8 +200,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssert((op.error as? NSError)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssert((op.error as NSError?)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.smallOutputData)
     }
     
@@ -215,8 +215,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<256)
@@ -225,8 +225,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<246)
@@ -235,8 +235,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         // Note: The following test fails on iOS 5.x because of an off-by-one error in the data
@@ -260,8 +260,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<256)
@@ -271,8 +271,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<215)
@@ -282,8 +282,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<214)
@@ -307,8 +307,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         // OAEP
@@ -322,8 +322,8 @@ class RSAOperationsTestsCompat: RSAOperationsTestsBase {
         op.debugUseCompatibilityCode = sUseCompatibilityCode
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
     }
     

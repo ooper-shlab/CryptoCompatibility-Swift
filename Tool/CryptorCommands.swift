@@ -15,7 +15,7 @@
 
 import Foundation
 
-protocol AESCryptorProtocol {
+protocol AESCryptorProtocol: class {
     init(toEncryptInput: Data, key: Data)
     init(toDecryptInput: Data, key: Data)
     var ivData: Data? {get set}
@@ -24,7 +24,7 @@ protocol AESCryptorProtocol {
 }
 extension QCCAESCryptor: AESCryptorProtocol {}
 extension QCCAESPadCryptor: AESCryptorProtocol {}
-protocol AESBigCryptorProtocol {
+protocol AESBigCryptorProtocol: class {
     init(toEncryptInput: InputStream, toOutput: OutputStream, key: Data)
     init(toDecryptInput: InputStream, toOutput: OutputStream, key: Data)
     var ivData: Data? {get set}

@@ -139,8 +139,8 @@ class KeyDerivationOperationsTests: XCTestCase {
         op.derivedKeyLength = 0
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCPBKDF2KeyDerivationErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCPBKDF2KeyDerivationErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.derivedKeyData)
         
         // repeat the above with a rounds value, which triggers the error in a different place
@@ -150,8 +150,8 @@ class KeyDerivationOperationsTests: XCTestCase {
         op.rounds = 1000
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, QCCPBKDF2KeyDerivationErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, kCCParamError)
+        XCTAssertEqual((op.error as NSError?)?.domain, QCCPBKDF2KeyDerivationErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, kCCParamError)
         XCTAssertNil(op.derivedKeyData)
     }
     

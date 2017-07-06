@@ -166,8 +166,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         let op = QCCRSASHASign(algorithm: .sha1, input: fileData, privateKey: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertNotNil((op.error as? NSError)?.domain)
-        XCTAssert((op.error as? NSError)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertNotNil((op.error as NSError?)?.domain)
+        XCTAssert((op.error as NSError?)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.signatureData)
     }
     
@@ -181,8 +181,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         var op = QCCRSASmallCryptor(toEncryptSmallInput: plaintextData, key: self.privateKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssert((op.error as? NSError)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssert((op.error as NSError?)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.smallOutputData)
         
         // decrypt with the public key
@@ -192,8 +192,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op = QCCRSASmallCryptor(toDecryptSmallInput: cyphertextData, key: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssert((op.error as? NSError)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssert((op.error as NSError?)?.code != 0); // We don't check the specific error here because different OS releases given you different values.
         XCTAssertNil(op.smallOutputData)
     }
     
@@ -207,8 +207,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         var op = QCCRSASmallCryptor(toEncryptSmallInput: plaintextData, key: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<256)
@@ -216,8 +216,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op = QCCRSASmallCryptor(toEncryptSmallInput: plaintextData, key: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<246)
@@ -225,8 +225,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op = QCCRSASmallCryptor(toEncryptSmallInput: plaintextData, key: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<245)
@@ -243,8 +243,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<256)
@@ -253,8 +253,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<215)
@@ -263,8 +263,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         plaintextData = plaintextData.subdata(in: 0..<214)
@@ -286,8 +286,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         var op = QCCRSASmallCryptor(toDecryptSmallInput: cyphertextData, key: self.publicKey!)
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
         
         // OAEP
@@ -300,8 +300,8 @@ class RSAOperationsTests: RSAOperationsTestsBase {
         op.padding = .oaep
         ToolCommon.shared.synchronouslyRun(operation: op)
         XCTAssertNotNil(op.error)
-        XCTAssertEqual((op.error as? NSError)?.domain, NSOSStatusErrorDomain)
-        XCTAssertEqual((op.error as? NSError)?.code, Int(errSecParam))
+        XCTAssertEqual((op.error as NSError?)?.domain, NSOSStatusErrorDomain)
+        XCTAssertEqual((op.error as NSError?)?.code, Int(errSecParam))
         XCTAssertNil(op.smallOutputData)
     }
     
