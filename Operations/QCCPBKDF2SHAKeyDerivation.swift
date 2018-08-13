@@ -257,7 +257,7 @@ class QCCPBKDF2SHAKeyDerivation: Operation {
         
         if err == kCCSuccess {
             let err32 = saltData.withUnsafeBytes{(saltPtr: UnsafePointer<UInt8>) in
-                result.withUnsafeMutableBytes{(mutableBytes: UnsafeMutablePointer<UInt8>) in
+                result.withUnsafeMutableBytes{ [count = result.count] (mutableBytes: UnsafeMutablePointer<UInt8>) in
                     CCKeyDerivationPBKDF(
                         CCPBKDFAlgorithm(kCCPBKDF2),
                         passwordString, passwordUTFLength,
@@ -265,7 +265,7 @@ class QCCPBKDF2SHAKeyDerivation: Operation {
                         ccAlgorithm,
                         UInt32(self.actualRounds),
                         mutableBytes,
-                        result.count
+                        count
                     )
                 }
             }

@@ -45,7 +45,7 @@ open class GetoptLong {
             }
             self.shortopts[key] = (key, hasArg, argIsOptional, key)
             
-            shortopts.characters.formIndex(after: &index)
+            shortopts.formIndex(after: &index)
         }
         for longopt in longopts {
             self.longopts[longopt.name] = longopt
@@ -78,7 +78,7 @@ open class GetoptLong {
     }
     
     private func processLongOption(_ i: Int, _ arg: String) -> Int {
-        let argName = arg.substring(from: arg.index(arg.startIndex, offsetBy: 2))
+		let argName = String(arg[arg.index(arg.startIndex, offsetBy: 2)...])
         if let opt = longopts[argName] {
             if opt.hasArg {
                 if i + 1 < argv.count && !isOption(argv[i + 1]) {
@@ -102,15 +102,15 @@ open class GetoptLong {
     }
     
     private func processShortOption(_ i: Int, _ arg: String) -> Int {
-        let argName = arg.substring(from: arg.index(after: arg.startIndex))
+		let argName = String(arg[arg.index(after: arg.startIndex)...])
         //temporal restriction
-        if argName.characters.count > 1 {
-            for index in argName.characters.indices {
+        if argName.count > 1 {
+            for index in argName.indices {
                 let optChar = String(argName[index])
                 if let opt = shortopts[optChar] {
                     if opt.hasArg {
                         if argName.index(after: index) < argName.endIndex {
-                            optargs[opt.key] = (argName.substring(from: argName.index(after: index)), false)
+							optargs[opt.key] = (String(argName[argName.index(after: index)...]), false)
                             return 0    //skip 0 arg
                         } else if i + 1 < argv.count && !isOption(argv[i + 1]) {
                             optargs[opt.key] = (argv[i + 1], false)

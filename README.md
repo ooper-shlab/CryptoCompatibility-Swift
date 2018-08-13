@@ -1,6 +1,6 @@
 # CryptoCompatibility
 
-2.0
+2.1
 
 CryptoCompatibility shows how to do common cryptographic operations using Apple APIs such that the results match other well-known cryptographic toolkits, most notably OpenSSL.
 
@@ -49,9 +49,9 @@ If you run the tool with no parameters it will print a list of supported subcomm
 
     $ ./CryptoCompatibility
     usage: CryptoCompatibility [-v] subcommand
-
+    
     Subcommands:
-
+    
     base64-encode [-l] file
     …
 
@@ -198,11 +198,13 @@ If you find any problems with this sample, or you’d like to suggest improvemen
 
 2.0 (Sep 2016) was a significant update to support the new unified crypto APIs added in macOS 10.12 and iOS 10.  It removed support for MD5 digests and RSA without padding; see the “Removed Operations” section for details.  It added support for SHA2 (as a digest and in other places, like PBKDF2, where a digest is used implicitly).  It also added support for OAEP padding in the RSA cryptor.  Finally, there was the usual update to use the latest tools and techniques.
 
+2.1 (Aug 2018) was an update to Swift 4.1 syntax (builds on Xcode 9.4.1).
+
 Share and Enjoy
 
 Apple Developer Technical Support  
 Core OS/Hardware
 
-15 Sep 2016
+12 Aug 2018
 
 Copyright (C) 2016 Apple Inc. All rights reserved.

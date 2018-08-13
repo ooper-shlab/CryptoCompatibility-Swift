@@ -176,8 +176,8 @@ final class QCCAESPadBigCryptor: Operation {
         // an empty input buffer.
         
         if self.error == nil {
-            let bytesRead = inputBuffer.withUnsafeMutableBytes {mutableBytes in
-                self.inputStream.read(mutableBytes, maxLength: inputBuffer.count)
+            let bytesRead = inputBuffer.withUnsafeMutableBytes { [count = inputBuffer.count] mutableBytes in
+                self.inputStream.read(mutableBytes, maxLength: count)
             }
             if bytesRead >= 0 {
                 inputBuffer.count = bytesRead
@@ -241,19 +241,19 @@ final class QCCAESPadBigCryptor: Operation {
         if self.error == nil {
             if inputBuffer.count != 0 {
                 err = inputBuffer.withUnsafeBytes{bytes in
-                    outputBuffer.withUnsafeMutableBytes{mutableBytes in
+                    outputBuffer.withUnsafeMutableBytes{ [count = outputBuffer.count] mutableBytes in
                         CCCryptorUpdate(
                             cryptor,
                             bytes, inputBuffer.count,
-                            mutableBytes, outputBuffer.count,
+                            mutableBytes, count,
                             &bytesToWrite)
                     }
                 }
             } else {
-                err = outputBuffer.withUnsafeMutableBytes{mutableBytes in
+                err = outputBuffer.withUnsafeMutableBytes{ [count = outputBuffer.count] mutableBytes in
                     CCCryptorFinal(
                         cryptor,
-                        mutableBytes, outputBuffer.count,
+                        mutableBytes, count,
                         &bytesToWrite)
                 }
             }
@@ -282,7 +282,7 @@ final class QCCAESPadBigCryptor: Operation {
         // Create the cryptor.
         
         let ivPointer = ivData?.withUnsafeBytes {(ivBytes: UnsafePointer<UInt8>) -> UnsafeMutableRawPointer in
-            let ptr = UnsafeMutableRawPointer.allocate(bytes: ivData!.count, alignedTo: 1)
+            let ptr = UnsafeMutableRawPointer.allocate(byteCount: ivData!.count, alignment: 1)
             ptr.initializeMemory(as: UInt8.self, from: ivBytes, count: ivData!.count)
             return ptr
         }

@@ -64,7 +64,7 @@ class QCCBase64Encode: Operation {
         // Our old code use to always add a trailing LF unless the input was empty,
         // and our unit test relies on that, so we replicate it here.
         
-        if output.characters.count > 0 && !output.hasSuffix("\n") {
+        if output.count > 0 && !output.hasSuffix("\n") {
             output += "\n"
         }
         self.outputString = output

@@ -58,13 +58,13 @@ class QHex {
         var result: Data? = nil
         var cursor = hexString.startIndex
         let limit = hexString.endIndex
-        if hexString.characters.count % 2 == 0 {
+        if hexString.count % 2 == 0 {
             result = Data()
             
             while cursor != limit {
                 
                 let next = hexString.index(cursor, offsetBy: 2)
-                guard let thisByte = UInt8(hexString.substring(with: cursor..<next), radix: 16) else {
+                guard let thisByte = UInt8(hexString[cursor..<next], radix: 16) else {
                     result = nil
                     break
                 }
