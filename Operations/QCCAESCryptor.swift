@@ -138,12 +138,12 @@ final class QCCAESCryptor: Operation {
             err = kCCParamError
         }
         let ivPointer = ivData?.withUnsafeBytes {(ivBytes: UnsafePointer<UInt8>) -> UnsafeMutableRawPointer in
-            let ptr = UnsafeMutableRawPointer.allocate(bytes: ivData!.count, alignedTo: 1)
+            let ptr = UnsafeMutableRawPointer.allocate(byteCount: ivData!.count, alignment: 1)
             ptr.initializeMemory(as: UInt8.self, from: ivBytes, count: ivData!.count)
             return ptr
         }
         defer {
-            ivPointer?.deallocate(bytes: ivData!.count, alignedTo: 1)
+            ivPointer?.deallocate()
         }
         
         if err == kCCSuccess {
@@ -151,7 +151,7 @@ final class QCCAESCryptor: Operation {
             
             let err32 = self.keyData.withUnsafeBytes {keyBytes in
                 self.inputData.withUnsafeBytes {bytes in
-                    result!.withUnsafeMutableBytes {mutableBytes in
+                    result!.withUnsafeMutableBytes { [count = result!.count] mutableBytes in
                         CCCrypt(
                             self.op,
                             CCAlgorithm(kCCAlgorithmAES128),
@@ -159,7 +159,7 @@ final class QCCAESCryptor: Operation {
                             keyBytes, self.keyData.count,
                             ivPointer,                                  // will be NULL if ivData is nil
                             bytes, self.inputData.count,
-                            mutableBytes, result!.count,
+                            mutableBytes, count,
                             &resultLength
                         )
                     }

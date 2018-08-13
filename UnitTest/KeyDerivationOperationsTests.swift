@@ -122,7 +122,7 @@ class KeyDerivationOperationsTests: XCTestCase {
         ToolCommon.shared.synchronouslyRun(operation: op)
         let timeTaken = Date.timeIntervalSinceReferenceDate - startTime
         XCTAssertNil(op.error)
-        XCTAssertEqualWithAccuracy(timeTaken, 0.5, accuracy: 0.2) //### `0.2` seems not enough for our environment
+        XCTAssertEqual(timeTaken, 0.5, accuracy: 0.2) //### `0.2` seems not enough for our environment
         XCTAssertEqual(op.actualRounds, actualRounds)
         XCTAssertEqual(op.derivedKeyData!, derivedKey)
     }
