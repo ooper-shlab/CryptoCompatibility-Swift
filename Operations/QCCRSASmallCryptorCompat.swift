@@ -206,13 +206,13 @@ class QCCRSASmallCryptorCompat: Operation {
         var resultDataLength = resultData!.count
         switch self.op {
         case .encrypt:
-            err = self.smallInputData.withUnsafeBytes {(bytes: UnsafePointer<UInt8>) in
-                resultData!.withUnsafeMutableBytes {(mutableBytes: UnsafeMutablePointer<UInt8>) in
+            err = self.smallInputData.withUnsafeBytes {bytes in
+                resultData!.withUnsafeMutableBytes {mutableBytes in
                     SecKeyEncrypt(
                         self.key,
                         padding,
-                        bytes, self.smallInputData.count,
-                        mutableBytes, &resultDataLength
+                        bytes.bindMemory(to: UInt8.self).baseAddress!, bytes.count,
+                        mutableBytes.bindMemory(to: UInt8.self).baseAddress!, &resultDataLength
                     )
                 }
             }
@@ -222,8 +222,8 @@ class QCCRSASmallCryptorCompat: Operation {
                     SecKeyDecrypt(
                         self.key,
                         padding,
-                        bytes, self.smallInputData.count,
-                        mutableBytes, &resultDataLength
+                        bytes.bindMemory(to: UInt8.self).baseAddress!, bytes.count,
+                        mutableBytes.bindMemory(to: UInt8.self).baseAddress!, &resultDataLength
                     )
                 }
             }

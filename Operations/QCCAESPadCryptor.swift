@@ -154,13 +154,13 @@ final class QCCAESPadCryptor: Operation {
         if self.ivData != nil && self.ivData!.count != kCCBlockSizeAES128 {
             err = kCCParamError
         }
-        let ivPointer = ivData?.withUnsafeBytes {(ivBytes: UnsafePointer<UInt8>) -> UnsafeMutableRawPointer in
-            let ptr = UnsafeMutableRawPointer.allocate(bytes: ivData!.count, alignedTo: 1)
-            ptr.initializeMemory(as: UInt8.self, from: ivBytes, count: ivData!.count)
+        let ivPointer = ivData?.withUnsafeBytes {ivBytes -> UnsafeMutableRawPointer in
+            let ptr = UnsafeMutableRawPointer.allocate(byteCount: ivBytes.count, alignment: 1)
+            ptr.initializeMemory(as: UInt8.self, from: ivBytes.bindMemory(to: UInt8.self).baseAddress!, count: ivBytes.count)
             return ptr
         }
         defer {
-            ivPointer?.deallocate(bytes: ivData!.count, alignedTo: 1)
+            ivPointer?.deallocate()
         }
         
         if err == kCCSuccess {
@@ -185,10 +185,10 @@ final class QCCAESPadCryptor: Operation {
                             self.op,
                             CCAlgorithm(kCCAlgorithmAES128),
                             CCOptions(((self.ivData == nil) ? kCCOptionECBMode : 0) | kCCOptionPKCS7Padding),
-                            keyBytes, self.keyData.count,
+                            keyBytes.baseAddress, keyBytes.count,
                             ivPointer,                                  // will be NULL if ivData is nil
-                            bytes, self.inputData.count,
-                            mutableBytes, result!.count,
+                            bytes.baseAddress, bytes.count,
+                            mutableBytes.baseAddress, mutableBytes.count,
                             &resultLength
                         )
                     }

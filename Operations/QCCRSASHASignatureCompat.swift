@@ -45,35 +45,35 @@ private func digestForAlgorithmOverInputData(_ algorithm: QCCRSASHASignatureComp
         digest = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
         inputData.withUnsafeBytes {bytes in
             digest.withUnsafeMutableBytes {mutableBytes in
-                _ = CC_SHA1(bytes, CC_LONG(inputData.count), mutableBytes)
+                _ = CC_SHA1(bytes.baseAddress, CC_LONG(inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
             }
         }
     case .sha2_224:
         digest = Data(count: Int(CC_SHA224_DIGEST_LENGTH))
         inputData.withUnsafeBytes {bytes in
             digest.withUnsafeMutableBytes {mutableBytes in
-                _ = CC_SHA224(bytes, CC_LONG(inputData.count), mutableBytes)
+                _ = CC_SHA224(bytes.baseAddress, CC_LONG(inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
             }
         }
     case .sha2_256:
         digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
         inputData.withUnsafeBytes {bytes in
             digest.withUnsafeMutableBytes {mutableBytes in
-                _ = CC_SHA256(bytes, CC_LONG(inputData.count), mutableBytes)
+                _ = CC_SHA256(bytes.baseAddress, CC_LONG(inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
             }
         }
     case .sha2_384:
         digest = Data(count: Int(CC_SHA384_DIGEST_LENGTH))
         inputData.withUnsafeBytes {bytes in
             digest.withUnsafeMutableBytes {mutableBytes in
-                _ = CC_SHA384(bytes, CC_LONG(inputData.count), mutableBytes)
+                _ = CC_SHA384(bytes.baseAddress, CC_LONG(inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
             }
         }
     case .sha2_512:
         digest = Data(count: Int(CC_SHA512_DIGEST_LENGTH))
         inputData.withUnsafeBytes {bytes in
             digest.withUnsafeMutableBytes {mutableBytes in
-                _ = CC_SHA512(bytes, CC_LONG(inputData.count), mutableBytes)
+                _ = CC_SHA512(bytes.baseAddress, CC_LONG(inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
             }
         }
     }
@@ -258,7 +258,7 @@ class QCCRSASHAVerifyCompat: Operation {
         
         if success {
             assert(CFGetTypeID(result) == CFBooleanGetTypeID())
-            self.verified = CFBooleanGetValue(result as! CFBoolean)
+            self.verified = result as! Bool
         } else {
             assert(umErrorCF != nil)
             self.error = umErrorCF?.takeRetainedValue() as Error?
@@ -295,10 +295,10 @@ class QCCRSASHAVerifyCompat: Operation {
                 SecKeyRawVerify(
                     self.publicKey,
                     QCCRSASHAVerifyCompat.secPaddingForAlgorithm(self.algorithm),
-                    bytes,
-                    digest.count,
-                    signatureBytes,
-                    self.signatureData.count
+                    bytes.bindMemory(to: UInt8.self).baseAddress!,
+                    bytes.count,
+                    signatureBytes.bindMemory(to: UInt8.self).baseAddress!,
+                    signatureBytes.count
                 )
             }
         }
@@ -477,35 +477,35 @@ class QCCRSASHASignCompat: Operation {
     #if os(iOS)
     
     private func runUsingRaw() {
-    
-    // First create a SHA digest of the data.
-    
-    let digest = digestForAlgorithmOverInputData(self.algorithm, self.inputData)
-    
-    // Then sign it.
-    
-    var resultData = Data(count: SecKeyGetBlockSize(self.privateKey))
-    var resultDataLength = resultData.count
-    let err = digest.withUnsafeBytes {bytes in
-    resultData.withUnsafeMutableBytes {mutableBytes in
-    SecKeyRawSign(
-    self.privateKey,
-    QCCRSASHAVerifyCompat.secPaddingForAlgorithm(self.algorithm),
-    bytes,
-    digest.count,
-    mutableBytes,
-    &resultDataLength)
-    }
-    }
-    
-    // Deal with the results.
-    
-    if err == errSecSuccess {
-    assert(resultDataLength == resultData.count)
-    self.signatureData = resultData
-    } else {
-    self.error = NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
-    }
+        
+        // First create a SHA digest of the data.
+        
+        let digest = digestForAlgorithmOverInputData(self.algorithm, self.inputData)
+        
+        // Then sign it.
+        
+        var resultData = Data(count: SecKeyGetBlockSize(self.privateKey))
+        var resultDataLength = resultData.count
+        let err = digest.withUnsafeBytes {bytes in
+            resultData.withUnsafeMutableBytes {mutableBytes in
+                SecKeyRawSign(
+                    self.privateKey,
+                    QCCRSASHAVerifyCompat.secPaddingForAlgorithm(self.algorithm),
+                    bytes.bindMemory(to: UInt8.self).baseAddress!,
+                    bytes.count,
+                    mutableBytes.bindMemory(to: UInt8.self).baseAddress!,
+                    &resultDataLength)
+            }
+        }
+        
+        // Deal with the results.
+        
+        if err == errSecSuccess {
+            assert(resultDataLength == resultData.count)
+            self.signatureData = resultData
+        } else {
+            self.error = NSError(domain: NSOSStatusErrorDomain, code: Int(err), userInfo: nil)
+        }
     }
     
     #endif
@@ -519,7 +519,7 @@ class QCCRSASHASignCompat: Operation {
             #elseif os(iOS)
                 self.runUsingRaw()
             #else
-                error; "What platform?"
+                #error("What platform?")
             #endif
         }
     }

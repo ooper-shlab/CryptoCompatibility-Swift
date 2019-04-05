@@ -164,7 +164,7 @@ class QToolCommand {
     
     //### Do not override this property directly. Instead, override `optionFuncs` and `optionFuncsWithArg` properly.
     var commandOptions: String {
-        return type(of: self).optionFuncs.keys.joined() +
+        return type(of: self).optionFuncs.keys.joined(separator: "") +
             type(of: self).optionFuncsWithArg.keys.map{$0+":"}.joined()
     }
     class var optionFuncs: [String: (QToolCommand)->()->Void] {

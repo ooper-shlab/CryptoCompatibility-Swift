@@ -78,35 +78,35 @@ class QCCSHADigest: Operation {
             digest = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
             self.inputData.withUnsafeBytes{bytes in
                 digest.withUnsafeMutableBytes{mutableBytes in
-                    _ = CC_SHA1(bytes, CC_LONG(self.inputData.count), mutableBytes)
+                    _ = CC_SHA1(bytes.baseAddress, CC_LONG(self.inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
                 }
             }
         case .sha2_224:
             digest = Data(count: Int(CC_SHA224_DIGEST_LENGTH))
             self.inputData.withUnsafeBytes{bytes in
                 digest.withUnsafeMutableBytes{mutableBytes in
-                    _ = CC_SHA224(bytes, CC_LONG(self.inputData.count), mutableBytes)
+                    _ = CC_SHA224(bytes.baseAddress, CC_LONG(self.inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
                 }
             }
         case .sha2_256:
             digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
             self.inputData.withUnsafeBytes{bytes in
                 digest.withUnsafeMutableBytes{mutableBytes in
-                    _ = CC_SHA256(bytes, CC_LONG(self.inputData.count), mutableBytes)
+                    _ = CC_SHA256(bytes.baseAddress, CC_LONG(self.inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
                 }
             }
         case .sha2_384:
             digest = Data(count: Int(CC_SHA384_DIGEST_LENGTH))
             self.inputData.withUnsafeBytes{bytes in
                 digest.withUnsafeMutableBytes{mutableBytes in
-                    _ = CC_SHA384(bytes, CC_LONG(self.inputData.count), mutableBytes)
+                    _ = CC_SHA384(bytes.baseAddress, CC_LONG(self.inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
                 }
             }
         case .sha2_512:
             digest = Data(count: Int(CC_SHA512_DIGEST_LENGTH))
             self.inputData.withUnsafeBytes{bytes in
                 digest.withUnsafeMutableBytes{mutableBytes in
-                    _ = CC_SHA512(bytes, CC_LONG(self.inputData.count), mutableBytes)
+                    _ = CC_SHA512(bytes.baseAddress, CC_LONG(self.inputData.count), mutableBytes.bindMemory(to: UInt8.self).baseAddress)
                 }
             }
         }

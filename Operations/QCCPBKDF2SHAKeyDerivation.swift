@@ -205,7 +205,7 @@ class QCCPBKDF2SHAKeyDerivation: Operation {
     override func main() {
         let ccAlgorithm: CCPseudoRandomAlgorithm
         let saltData: Data
-        let saltDummy = Data.init(bytes: [0])
+        let saltDummy = Data([0])
         
         assert(self.derivedKeyLength >= 0)
         
@@ -256,20 +256,21 @@ class QCCPBKDF2SHAKeyDerivation: Operation {
         // Do the key derivation and save the results.
         
         if err == kCCSuccess {
-            let err32 = saltData.withUnsafeBytes{(saltPtr: UnsafePointer<UInt8>) in
-                result.withUnsafeMutableBytes{(mutableBytes: UnsafeMutablePointer<UInt8>) in
+            let err32 = saltData.withUnsafeBytes {saltPtr in
+                result.withUnsafeMutableBytes {mutableBytes in
                     CCKeyDerivationPBKDF(
                         CCPBKDFAlgorithm(kCCPBKDF2),
                         passwordString, passwordUTFLength,
-                        saltPtr, saltLength,
+                        saltPtr.bindMemory(to: UInt8.self).baseAddress, saltLength,
                         ccAlgorithm,
                         UInt32(self.actualRounds),
-                        mutableBytes,
-                        result.count
+                        mutableBytes.bindMemory(to: UInt8.self).baseAddress,
+                        mutableBytes.count
                     )
                 }
             }
-            if err32 == -1 {
+            err = Int(err32)
+            if err == -1 {
                 // The header docs say that CCKeyDerivationPBKDF returns kCCParamError but that's not the case
                 // on current systems; you get -1 instead <rdar://problem/13640477>.  We translate -1, which isn't
                 // a reasonable CommonCrypto error, to kCCParamError.

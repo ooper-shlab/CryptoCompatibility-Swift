@@ -14,7 +14,7 @@ You should not contact to Apple or SHLab(jp) about any faults caused by my trans
 
 ### Build
 
-Xcode 8.1, iOS SDK 10.1
+Xcode 10.2, iOS SDK 12.2
 
 ===========================================================================
 Some utility files are used to make line-by-line translation easier. They have another license terms.

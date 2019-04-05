@@ -104,7 +104,7 @@ class QCCHMACSHAAuthentication: Operation {
         self.keyData.withUnsafeBytes{keyBytes in
             self.inputData.withUnsafeBytes{bytes in
                 hmac.withUnsafeMutableBytes{mutableBytes in
-                    CCHmac(kCCAlgorithm[self.algorithm], keyBytes, self.keyData.count, bytes, self.inputData.count, mutableBytes)
+                    CCHmac(kCCAlgorithm[self.algorithm], keyBytes.baseAddress, keyBytes.count, bytes.baseAddress, bytes.count, mutableBytes.baseAddress)
                 }
             }
         }

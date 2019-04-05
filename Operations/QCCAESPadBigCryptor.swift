@@ -177,7 +177,7 @@ final class QCCAESPadBigCryptor: Operation {
         
         if self.error == nil {
             let bytesRead = inputBuffer.withUnsafeMutableBytes {mutableBytes in
-                self.inputStream.read(mutableBytes, maxLength: inputBuffer.count)
+                self.inputStream.read(mutableBytes.bindMemory(to: UInt8.self).baseAddress!, maxLength: mutableBytes.count)
             }
             if bytesRead >= 0 {
                 inputBuffer.count = bytesRead
@@ -200,9 +200,9 @@ final class QCCAESPadBigCryptor: Operation {
         
         var bytesSoFar = 0
         let bytesTotal = outputBuffer.count
-        outputBuffer.withUnsafeBytes {(buffer: UnsafePointer<UInt8>) in
+        outputBuffer.withUnsafeBytes {buffer in
             while self.error == nil && bytesSoFar != bytesTotal {
-                let bytesWritten = self.outputStream.write(buffer+bytesSoFar, maxLength: bytesTotal - bytesSoFar)
+                let bytesWritten = self.outputStream.write(buffer.bindMemory(to: UInt8.self).baseAddress!+bytesSoFar, maxLength: bytesTotal - bytesSoFar)
                 if bytesWritten < 0 {
                     self.error = self.outputStream.streamError
                 } else if bytesWritten == 0 {
@@ -239,13 +239,14 @@ final class QCCAESPadBigCryptor: Operation {
         // bytes that are left over in the cryptor.
         
         if self.error == nil {
-            if inputBuffer.count != 0 {
+            let inputCount = inputBuffer.count
+            if inputCount != 0 {
                 err = inputBuffer.withUnsafeBytes{bytes in
                     outputBuffer.withUnsafeMutableBytes{mutableBytes in
                         CCCryptorUpdate(
                             cryptor,
-                            bytes, inputBuffer.count,
-                            mutableBytes, outputBuffer.count,
+                            bytes.baseAddress, bytes.count,
+                            mutableBytes.baseAddress, mutableBytes.count,
                             &bytesToWrite)
                     }
                 }
@@ -253,7 +254,7 @@ final class QCCAESPadBigCryptor: Operation {
                 err = outputBuffer.withUnsafeMutableBytes{mutableBytes in
                     CCCryptorFinal(
                         cryptor,
-                        mutableBytes, outputBuffer.count,
+                        mutableBytes.baseAddress, mutableBytes.count,
                         &bytesToWrite)
                 }
             }
@@ -281,17 +282,18 @@ final class QCCAESPadBigCryptor: Operation {
         
         // Create the cryptor.
         
-        let ivPointer = ivData?.withUnsafeBytes {(ivBytes: UnsafePointer<UInt8>) -> UnsafeMutableRawPointer in
-            let ptr = UnsafeMutableRawPointer.allocate(bytes: ivData!.count, alignedTo: 1)
-            ptr.initializeMemory(as: UInt8.self, from: ivBytes, count: ivData!.count)
+        let ivPointer = ivData?.withUnsafeBytes {ivBytes -> UnsafeMutableRawPointer in
+            let ptr = UnsafeMutableRawPointer.allocate(byteCount: ivData!.count, alignment: 1)
+            ptr.initializeMemory(as: UInt8.self, from: ivBytes.bindMemory(to: UInt8.self).baseAddress!, count: ivBytes.count)
             return ptr
         }
+        defer{ivPointer?.deallocate()}
         let err = self.keyData.withUnsafeBytes {keyBytes in
             CCCryptorCreate(
                 self.op,
                 CCAlgorithm(kCCAlgorithmAES128),
                 CCOptions(((self.ivData == nil) ? kCCOptionECBMode : 0) | kCCOptionPKCS7Padding),
-                keyBytes, self.keyData.count,
+                keyBytes.baseAddress, keyBytes.count,
                 ivPointer,                                  // will be NULL if ivData is nil
                 &cryptor
             )
