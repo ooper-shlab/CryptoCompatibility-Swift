@@ -92,7 +92,7 @@ class Base64DecodeCommand: QToolCommand {
             throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: nil)
         } else {
             op.outputData!.withUnsafeBytes {bytes in
-                _ = fwrite(bytes, op.outputData!.count, 1, stdout)
+                _ = fwrite(bytes.baseAddress, bytes.count, 1, stdout)
             }
         }
         

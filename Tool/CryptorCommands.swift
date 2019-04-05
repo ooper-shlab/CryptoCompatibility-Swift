@@ -129,7 +129,7 @@ class AESCryptorCommand: QToolCommand {
         ToolCommon.shared.synchronouslyRun(operation: op as! Operation)
         if op.error == nil {
             op.outputData!.withUnsafeBytes{bytes in
-                _ = fwrite(bytes, op.outputData!.count, 1, stdout)
+                _ = fwrite(bytes.baseAddress, bytes.count, 1, stdout)
             }
         } else {
             throw op.error!
